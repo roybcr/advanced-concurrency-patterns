@@ -11,7 +11,7 @@ func generator() (<-chan int, <-chan string) {
 	ch2 := make(chan string)
 
 	// the generator generates the next value from within an 
-	// infinite loop whenever a ready receiver asks for a value
+	// infinite loop whenever a ready receiver asks for it
 
 	go func() { for i := 0; ; i++ { ch1 <- i } }()
 	go func() {
