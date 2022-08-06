@@ -14,6 +14,14 @@ func main() {
 	outputB := fanOut(rch)
 	outputC := fanOut(rch)
 	outputD := fanOut(rch)
+	
+	for i, v := range []<-chan int32 {outputA, outputB, outputC, outputD} {
+		go func(ch <-chan int32, idx int) {
+			val := <-ch 
+			fmt.Printf("%d) value: %d", idx, val)
+		}(v, i)
+	}
+	fmt.Printf("%T, %T, %T, %T\n", outputA, outputB, outputC, outputD)
 
 	for range rch {
 		select {
