@@ -64,10 +64,10 @@ func fanIn[k T](channels ...<-chan k) <-chan k {
 func main () { 
 
 	i1 := makeRChan([]int32{0, 2, 6, 8  })
-    i2 := makeRChan([]int32{1, 5, 19, 23})
+	i2 := makeRChan([]int32{1, 5, 19, 23})
 
-    out := fanIn(i1, i2)
+	out := fanIn(i1, i2)
 
-    for value := range out { fmt.Println("Value:", value) }
+	for value := range out { fmt.Println("Value:", value) }
 
 }
