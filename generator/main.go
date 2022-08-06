@@ -17,11 +17,10 @@ func generator() (<-chan int, <-chan string) {
 	go func() {
 
 		for {
-
+			
 			ch2 <- fmt.Sprintf(
 
 				"%s %d %d, %s, %d:%d:%d",
-				
 				time.Now().Month   (),
 				time.Now().Day     (),
 				time.Now().Year    (),
@@ -30,7 +29,6 @@ func generator() (<-chan int, <-chan string) {
 				time.Now().Minute  (),
 				time.Now().Second  (),
 			)
-			
 		}
 
 	}()
@@ -39,18 +37,14 @@ func generator() (<-chan int, <-chan string) {
 }
 
 func main() {
-
 	ch1, ch2 := generator()
-
 	for i := 0; i < 10; i++ {
 		
 		time.Sleep(time.Second * 2)
 
 		value 	  := <-ch1
 		timestamp := <-ch2
+		fmt.Printf("Generator value: %d | %s\n", value, timestamp)
 
-		fmt.Printf("Generator value: %d | %s\n",
-		value, timestamp)
-		
 	}
 }
