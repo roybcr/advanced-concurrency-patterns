@@ -20,10 +20,10 @@ func (r *Runner) Run() {
 
 	func(wg *sync.WaitGroup) {
 		for _, fn := range (*r).runner {
-			go func(wg *sync.WaitGroup, fn func()) {
-				defer (*wg).Done()
+			go func(wg **sync.WaitGroup, fn func()) {
+				defer (**wg).Done()
 				fn()
-			}(wg, fn)
+			}(&wg, fn)
 		}
 	}(&wg)
 
