@@ -30,7 +30,14 @@ func (r *Runner) Run() {
 }
 
 var AlgorithmsRunner = Runner{[]func(){alg.BinarySearch}}
-var ConceptsRunner = Runner{[]func(){con.LexicalConfinment, con.OrChannel}}
+var ConceptsRunner = Runner{
+	[]func(){
+		con.OrChannel,
+		con.LexicalConfinment,
+		con.NoErrorHandling,
+		con.ErrorHandling,
+	},
+}
 var PrimitivesRunner = Runner{
 	[]func(){
 		pri.Cond,
@@ -46,7 +53,4 @@ func RunAll() {
 	AlgorithmsRunner.Run()
 }
 
-func main() {
-
-	RunAll()
-}
+func main() { RunAll() }
