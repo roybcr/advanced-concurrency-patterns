@@ -15,6 +15,7 @@ func NoErrorHandling() {
 			
 			for _, url := range urls {
 				resp, err := http.Get(url)
+				
 				// The goroutine is in a position where it can only
 				// prints out the error and hopes something is paying attention
 				if err != nil {

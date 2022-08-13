@@ -26,9 +26,13 @@ func ErrorHandling() {
 				result = Result{ Error: err, Response: resp }
 				
 				select {
+
 					case <-done: { return }
-					// Pass the result whether it's an error or response,
-					// so that it can be handled out of the scope of this goroutine
+					
+					// Separating the concerns of error handling from our producer goroutine.
+					// This is desirable because the goroutine that spawned the producer goroutine,
+					// in this case our main goroutine, has more context about the running program, 
+					// and can make more intelligent decisions about what to do with errors.
 					case results <- result:
 				}
 			}
@@ -39,14 +43,23 @@ func ErrorHandling() {
 	}
 
 	done := make(chan interface{})
-	urls := []string{"https://www.google.com", "https://badhost"}
-	
 	defer close(done)
-	
+
+
+	errCount := 0
+	urls := []string{"https://www.google.com", "https://badhost", "a", "b", "https://github.com"}
 	for result := range checkStatus(done, urls...) {
 
 		if result.Error != nil {
+
 			fmt.Printf("Error: %v\n", result.Error)
+			errCount ++
+
+			if errCount >= 3 {
+				fmt.Println("Too many errors, breaking!")
+				break
+			}
+
 			continue
 		}
 
