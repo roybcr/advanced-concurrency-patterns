@@ -26,7 +26,6 @@ func binarySearch(needle int, haystack []int) int {
 	if haystack[right] < needle || haystack[left] > needle { return -1 }
 	if haystack[right] == haystack[left] { 
 		if haystack[right] == needle { return right }
-		if haystack[left ] == needle { return left  }
 		return -1
 	}
 
