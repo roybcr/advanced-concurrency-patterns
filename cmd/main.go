@@ -1,8 +1,9 @@
 package main
 
 import (
-con	"concurrencyPatterns/pkg/concepts"
-pri	"concurrencyPatterns/pkg/primitives"
+	alg "concurrencyPatterns/pkg/algorithms"
+	con "concurrencyPatterns/pkg/concepts"
+	pri "concurrencyPatterns/pkg/primitives"
 	"sync"
 )
 
@@ -18,19 +19,18 @@ func (r *Runner) Run() {
 	var wg sync.WaitGroup
 	wg.Add(len((*r).runner))
 
-	func(wg *sync.WaitGroup) {
-		for _, fn := range (*r).runner {
-			go func(wg **sync.WaitGroup, fn func()) {
-				defer (**wg).Done()
-				fn()
-			}(&wg, fn)
-		}
-	}(&wg)
+	for _, fn := range (*r).runner {
+		go func(wg *sync.WaitGroup, fn func()) {
+			defer (*wg).Done()
+			fn()
+		}(&wg, fn)
+	}
 
 	wg.Wait()
 }
 
-var ConceptsRunner 	 = Runner{[]func(){con.LexicalConfinment}}
+var AlgorithmsRunner = Runner{[]func(){alg.BinarySearch}}
+var ConceptsRunner = Runner{[]func(){con.LexicalConfinment, con.OrChannel}}
 var PrimitivesRunner = Runner{
 	[]func(){
 		pri.Cond,
@@ -40,9 +40,13 @@ var PrimitivesRunner = Runner{
 	},
 }
 
-func runAll() {
+func RunAll() {
 	ConceptsRunner.Run()
 	PrimitivesRunner.Run()
+	AlgorithmsRunner.Run()
 }
 
-func main() { runAll() }
+func main() {
+
+	RunAll()
+}
