@@ -13,9 +13,10 @@ type Result struct {
 func ErrorHandling() {
 	
 	checkStatus := func(done <-chan interface{}, urls ...string) <-chan Result {
-		
 		results := make(chan Result)
+
 		go func() {
+			
 			defer close(results)
 		
 			for _, url := range urls {
