@@ -11,11 +11,11 @@ import (
 
 func main() {
 
-	in := generateWork([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
+	done := make(chan interface{})
+	defer close(done)
 
-	out := filter(in)
-	out = square(out)
-	out = half(out)
+	in  := generateWork([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
+	out := half(square(filter(in, done), done), done)
 
 	// 2,8,18,32,50,72,98,128,162,200
 	for val := range out {
@@ -24,14 +24,18 @@ func main() {
 
 }
 
-func filter(in <-chan int) <-chan int {
+func filter(in <-chan int, done <-chan interface{}) <-chan int {
 	out := make(chan int)
 
 	go func() {
 		defer close(out)
 		for i := range in {
-			if i%2 == 0 {
-				out <- i
+			select {
+				case <-done: { return }
+				default:
+					if i % 2 == 0 { 
+						out<- i 
+					}
 			}
 		}
 	}()
@@ -39,27 +43,33 @@ func filter(in <-chan int) <-chan int {
 	return out
 }
 
-func square(in <-chan int) <-chan int {
+func square(in <-chan int, done <-chan interface{}) <-chan int {
 	out := make(chan int)
 
 	go func() {
 		defer close(out)
 		for i := range in {
-			out <- int(math.Pow(float64(i), 2))
+			select {
+				case <-done: { return }
+				case out<- int(math.Pow(float64(i), 2)):
+			}
+			
 		}
 	}()
 
 	return out
 }
 
-func half(in <-chan int) <-chan int {
+func half(in <-chan int, done <-chan interface{}) <-chan int {
 	out := make(chan int)
 
 	go func() {
 		defer close(out)
 		for i := range in {
-			out <- (i / 2)
-
+			select {
+				case <-done: { return }
+				case out<- (i/2):
+			}
 		}
 	}()
 	return out

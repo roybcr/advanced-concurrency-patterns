@@ -29,8 +29,8 @@ func (r *Runner) Run() {
 	wg.Wait()
 }
 
-var AlgorithmsRunner = Runner{[]func(){alg.BinarySearch}}
-var ConceptsRunner = Runner{
+var AlgorithmsRunner Runner = Runner{[]func(){alg.BinarySearch}}
+var ConceptsRunner   Runner = Runner{
 	[]func(){
 		con.OrChannel,
 		con.LexicalConfinment,
@@ -38,7 +38,7 @@ var ConceptsRunner = Runner{
 		con.ErrorHandling,
 	},
 }
-var PrimitivesRunner = Runner{
+var PrimitivesRunner Runner = Runner{
 	[]func(){
 		pri.Cond,
 		pri.RWMutex,
