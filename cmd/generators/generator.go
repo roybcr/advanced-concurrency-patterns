@@ -1,11 +1,11 @@
-package main
+package generators
 
 import (
 	"fmt"
 	"time"
 )
 
-func generator() (<-chan int, <-chan string) {
+func Generator() (<-chan int, <-chan string) {
 
 	ch1 := make(chan int   )
 	ch2 := make(chan string)
@@ -36,15 +36,4 @@ func generator() (<-chan int, <-chan string) {
 	return ch1, ch2;
 }
 
-func main() {
-	ch1, ch2 := generator()
-	for i := 0; i < 10; i++ {
-		
-		time.Sleep(time.Second * 2)
 
-		value 	  := <-ch1
-		timestamp := <-ch2
-		fmt.Printf("Generator value: %d | %s\n", value, timestamp)
-
-	}
-}
