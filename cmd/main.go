@@ -1,6 +1,7 @@
 package main
 
 import (
+	gen "concurrencyPatterns/cmd/generators"
 	alg "concurrencyPatterns/pkg/algorithms"
 	con "concurrencyPatterns/pkg/concepts"
 	pri "concurrencyPatterns/pkg/primitives"
@@ -53,4 +54,7 @@ func RunAll() {
 	AlgorithmsRunner.Run()
 }
 
-func main() { RunAll() }
+func main() { 
+	gen.Generators()
+	RunAll() 
+}
