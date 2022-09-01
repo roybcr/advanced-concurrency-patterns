@@ -4,6 +4,7 @@ import (
 	gen "concurrencyPatterns/cmd/generators"
 	alg "concurrencyPatterns/pkg/algorithms"
 	con "concurrencyPatterns/pkg/concepts"
+	pat "concurrencyPatterns/pkg/patterns"
 	pri "concurrencyPatterns/pkg/primitives"
 	"sync"
 )
@@ -30,8 +31,9 @@ func (r *Runner) Run() {
 	wg.Wait()
 }
 
+var PatternsRunner Runner = Runner{[]func(){pat.Observe}}
 var AlgorithmsRunner Runner = Runner{[]func(){alg.BinarySearch}}
-var ConceptsRunner   Runner = Runner{
+var ConceptsRunner Runner = Runner{
 	[]func(){
 		con.OrChannel,
 		con.LexicalConfinment,
@@ -49,12 +51,13 @@ var PrimitivesRunner Runner = Runner{
 }
 
 func RunAll() {
+	PatternsRunner.Run()
 	ConceptsRunner.Run()
 	PrimitivesRunner.Run()
 	AlgorithmsRunner.Run()
 }
 
-func main() { 
+func main() {
+	RunAll()
 	gen.Generators()
-	RunAll() 
 }
